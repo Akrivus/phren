@@ -4,7 +4,7 @@ class CreateFriends < ActiveRecord::Migration[7.1]
       t.string :name
       t.string :person_prompt
       t.string :system_prompt
-      t.references :user, null: false, foreign_key: true
+      t.references :user, type: :uuid, null: false, foreign_key: true
 
       t.timestamps
     end
