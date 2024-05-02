@@ -1,13 +1,14 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
-  # GET /users or /users.json
+  # GET /users
   def index
     @users = User.all
   end
 
-  # GET /users/1 or /users/1.json
+  # GET /users/:id
   def show
+
   end
 
   # GET /users/new
@@ -15,11 +16,12 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  # GET /users/1/edit
+  # GET /users/:id/edit
   def edit
+
   end
 
-  # POST /users or /users.json
+  # POST /users
   def create
     @user = User.new(user_params)
 
@@ -34,7 +36,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
+  # PUT /users/:id
   def update
     respond_to do |format|
       if @user.update(user_params)
@@ -47,7 +49,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1 or /users/1.json
+  # DELETE /users/:id
   def destroy
     @user.destroy!
 
@@ -57,14 +59,39 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST /users/auth
+  def auth
+    @user = User.find_by(username: params[:username])
+    logged_in = @user && @user.authenticate(params[:password])
+    set_current_user(@user) if logged_in
+
+    respond_to do |format|
+      if logged_in?
+        format.html { redirect_to friends_url, notice: "Welcome!" }
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { redirect_to login_url, notice: "Invalid username or password" }
+        format.json { render json: { error: "Invalid username or password" }, status: :unprocessable_entity }
+      end
+  end
+
+  # GET /login
+  def login
+
+  end
+
+  # GET /logout
+  def logout
+    set_current_user(nil)
+    redirect_to login_url, notice: "Logged out"
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:username, :admin)
+      params.require(:user).permit(:username, :password, :password_confirmation)
     end
 end
