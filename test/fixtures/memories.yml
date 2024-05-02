@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyString
+  embedding: 1.5
+  friend: one
+  chat: one
+
+two:
+  content: MyString
+  embedding: 1.5
+  friend: two
+  chat: two
