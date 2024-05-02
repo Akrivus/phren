@@ -1,9 +1,10 @@
 class FriendsController < ApplicationController
+  before_action :set_friends, only: %i[ index new create ]
   before_action :set_friend, only: %i[ show edit update destroy ]
 
   # GET /friends
   def index
-    @friends = Friend.all
+    @friends = @friends.all
   end
 
   # GET /friends/:id
@@ -13,7 +14,7 @@ class FriendsController < ApplicationController
 
   # GET /friends/new
   def new
-    @friend = Friend.new
+    @friend = @friends.new
   end
 
   # GET /friends/:id/edit
@@ -23,7 +24,7 @@ class FriendsController < ApplicationController
 
   # POST /friends
   def create
-    @friend = Friend.new(friend_params)
+    @friend = @friends.new(friend_params)
 
     respond_to do |format|
       if @friend.save
@@ -60,6 +61,10 @@ class FriendsController < ApplicationController
   end
 
   private
+    def set_friends
+      @friends = current_user.friends
+    end
+
     def set_friend
       @friend = Friend.find(params[:id])
     end
