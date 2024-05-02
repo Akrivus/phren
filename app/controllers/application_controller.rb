@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   helper_method :set_current_user
   helper_method :logged_in?
 
-  before_action :authenticate_user!
+  before_action :require_login
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
 
-  def authenticate_user!
+  def require_login
     redirect_to login_path unless logged_in?
   end
 end

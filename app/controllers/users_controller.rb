@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
+  skip_before_action :require_login, only: %i[ new create auth login ]
+
   # GET /users
   def index
     @users = User.all
@@ -73,6 +75,7 @@ class UsersController < ApplicationController
         format.html { redirect_to login_url, notice: "Invalid username or password" }
         format.json { render json: { error: "Invalid username or password" }, status: :unprocessable_entity }
       end
+    end
   end
 
   # GET /login
