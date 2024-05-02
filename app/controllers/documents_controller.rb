@@ -1,27 +1,28 @@
 class DocumentsController < ApplicationController
+  before_action :set_documents, only: %i[ index new create ]
   before_action :set_document, only: %i[ show edit update destroy ]
 
-  # GET /documents or /documents.json
+  # GET /friends/:friend_id/documents
   def index
-    @documents = Document.all
+    @documents = @documents.all
   end
 
-  # GET /documents/1 or /documents/1.json
+  # GET /friends/:friend_id/documents/:id 
   def show
   end
 
-  # GET /documents/new
+  # GET /friends/:friend_id/documents/new
   def new
-    @document = Document.new
+    @document = @documents.new
   end
 
-  # GET /documents/1/edit
+  # GET /friends/:friend_id/documents/:id /edit
   def edit
   end
 
-  # POST /documents or /documents.json
+  # POST /friends/:friend_id/documents
   def create
-    @document = Document.new(document_params)
+    @document = @documents.new(document_params)
 
     respond_to do |format|
       if @document.save
@@ -34,7 +35,7 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /documents/1 or /documents/1.json
+  # PUT /friends/:friend_id/documents/:id 
   def update
     respond_to do |format|
       if @document.update(document_params)
@@ -47,7 +48,7 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # DELETE /documents/1 or /documents/1.json
+  # DELETE /friends/:friend_id/documents/:id 
   def destroy
     @document.destroy!
 
@@ -58,12 +59,14 @@ class DocumentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_documents
+      @documents = Document.where(friend_id: params[:friend_id])
+    end
+
     def set_document
       @document = Document.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def document_params
       params.require(:document).permit(:name, :summary, :file)
     end

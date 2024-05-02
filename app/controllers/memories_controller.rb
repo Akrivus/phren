@@ -1,27 +1,28 @@
 class MemoriesController < ApplicationController
+  before_action :set_memories, only: %i[ index new create ]
   before_action :set_memory, only: %i[ show edit update destroy ]
 
-  # GET /memories or /memories.json
+  # GET /friends/:friend_id/memories
   def index
-    @memories = Memory.all
+    @memories = @memories.all
   end
 
-  # GET /memories/1 or /memories/1.json
+  # GET /friends/:friend_id/memories/:id
   def show
   end
 
-  # GET /memories/new
+  # GET /friends/:friend_id/memories/new
   def new
-    @memory = Memory.new
+    @memory = @memories.new
   end
 
-  # GET /memories/1/edit
+  # GET /friends/:friend_id/memories/:id/edit
   def edit
   end
 
-  # POST /memories or /memories.json
+  # POST /friends/:friend_id/memories
   def create
-    @memory = Memory.new(memory_params)
+    @memory = @memories.new(memory_params)
 
     respond_to do |format|
       if @memory.save
@@ -34,7 +35,7 @@ class MemoriesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /memories/1 or /memories/1.json
+  # PUT /friends/:friend_id/memories/:id
   def update
     respond_to do |format|
       if @memory.update(memory_params)
@@ -47,7 +48,7 @@ class MemoriesController < ApplicationController
     end
   end
 
-  # DELETE /memories/1 or /memories/1.json
+  # DELETE /friends/:friend_id/memories/:id
   def destroy
     @memory.destroy!
 
@@ -58,13 +59,15 @@ class MemoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_memories
+      @memories = Memory.where(friend_id: params[:friend_id])
+    end
+
     def set_memory
       @memory = Memory.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def memory_params
-      params.require(:memory).permit(:content, :embedding, :friend_id, :chat_id)
+      params.require(:memory).permit(:content)
     end
 end

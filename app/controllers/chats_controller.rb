@@ -1,27 +1,30 @@
 class ChatsController < ApplicationController
+  before_action :set_chats, only: %i[ index new create ]
   before_action :set_chat, only: %i[ show edit update destroy ]
 
-  # GET /chats or /chats.json
+  # GET /friends/:friend_id/chats
   def index
-    @chats = Chat.all
+    @chats = @chats.all
   end
 
-  # GET /chats/1 or /chats/1.json
+  # GET /friends/:friend_id/chats/:id 
   def show
+
   end
 
-  # GET /chats/new
+  # GET /friends/:friend_id/chats/new
   def new
-    @chat = Chat.new
+    @chat = @chats.new
   end
 
-  # GET /chats/1/edit
+  # GET /friends/:friend_id/chats/:id /edit
   def edit
+
   end
 
-  # POST /chats or /chats.json
+  # POST /friends/:friend_id/chats
   def create
-    @chat = Chat.new(chat_params)
+    @chat = @chats.new(chat_params)
 
     respond_to do |format|
       if @chat.save
@@ -34,7 +37,7 @@ class ChatsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /chats/1 or /chats/1.json
+  # PUT /friends/:friend_id/chats/:id 
   def update
     respond_to do |format|
       if @chat.update(chat_params)
@@ -47,7 +50,7 @@ class ChatsController < ApplicationController
     end
   end
 
-  # DELETE /chats/1 or /chats/1.json
+  # DELETE /friends/:friend_id/chats/:id 
   def destroy
     @chat.destroy!
 
@@ -58,12 +61,14 @@ class ChatsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_chats
+      @chats = Chat.where(friend_id: params[:friend_id])
+    end
+
     def set_chat
       @chat = Chat.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def chat_params
       params.require(:chat).permit(:summary, :active)
     end

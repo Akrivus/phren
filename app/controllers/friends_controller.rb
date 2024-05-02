@@ -1,13 +1,14 @@
 class FriendsController < ApplicationController
   before_action :set_friend, only: %i[ show edit update destroy ]
 
-  # GET /friends or /friends.json
+  # GET /friends
   def index
     @friends = Friend.all
   end
 
-  # GET /friends/1 or /friends/1.json
+  # GET /friends/:id
   def show
+    
   end
 
   # GET /friends/new
@@ -15,11 +16,12 @@ class FriendsController < ApplicationController
     @friend = Friend.new
   end
 
-  # GET /friends/1/edit
+  # GET /friends/:id/edit
   def edit
+
   end
 
-  # POST /friends or /friends.json
+  # POST /friends
   def create
     @friend = Friend.new(friend_params)
 
@@ -34,7 +36,7 @@ class FriendsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /friends/1 or /friends/1.json
+  # PATCH/PUT /friends/:id
   def update
     respond_to do |format|
       if @friend.update(friend_params)
@@ -47,7 +49,7 @@ class FriendsController < ApplicationController
     end
   end
 
-  # DELETE /friends/1 or /friends/1.json
+  # DELETE /friends/:id
   def destroy
     @friend.destroy!
 
@@ -58,12 +60,10 @@ class FriendsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_friend
       @friend = Friend.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def friend_params
       params.require(:friend).permit(:name, :person_prompt, :system_prompt)
     end

@@ -1,25 +1,26 @@
 class MessagesController < ApplicationController
+  before_action :set_messages, only: %i[ index new create ]
   before_action :set_message, only: %i[ show edit update destroy ]
 
-  # GET /messages or /messages.json
+  # GET /friends/:friend_id/chats/:chat_id/messages
   def index
-    @messages = Message.all
+    @messages = @messages.all
   end
 
-  # GET /messages/1 or /messages/1.json
+  # GET /friends/:friend_id/chats/:chat_id/messages/:id
   def show
   end
 
-  # GET /messages/new
+  # GET /friends/:friend_id/chats/:chat_id/messages/new
   def new
     @message = Message.new
   end
 
-  # GET /messages/1/edit
+  # GET /friends/:friend_id/chats/:chat_id/messages/:id/edit
   def edit
   end
 
-  # POST /messages or /messages.json
+  # POST /friends/:friend_id/chats/:chat_id/messages
   def create
     @message = Message.new(message_params)
 
@@ -34,7 +35,7 @@ class MessagesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /messages/1 or /messages/1.json
+  # PUT /friends/:friend_id/chats/:chat_id/messages/:id
   def update
     respond_to do |format|
       if @message.update(message_params)
@@ -47,7 +48,7 @@ class MessagesController < ApplicationController
     end
   end
 
-  # DELETE /messages/1 or /messages/1.json
+  # DELETE /friends/:friend_id/chats/:chat_id/messages/:id
   def destroy
     @message.destroy!
 
@@ -58,13 +59,15 @@ class MessagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_messages
+      @messages = Message.where(chat_id: params[:chat_id])
+    end
+
     def set_message
       @message = Message.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def message_params
-      params.require(:message).permit(:content, :role, audio_files: [])
+      params.require(:message).permit(:content, :role)
     end
 end
