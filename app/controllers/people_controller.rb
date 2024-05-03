@@ -28,7 +28,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       if @person.save
-        format.html { redirect_to person_url(@person), notice: "person was successfully created." }
+        format.html { redirect_to person_url(@person), notice: "Person was successfully created." }
         format.json { render :show, status: :created, location: @person }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,7 +41,7 @@ class PeopleController < ApplicationController
   def update
     respond_to do |format|
       if @person.update(person_params)
-        format.html { redirect_to person_url(@person), notice: "person was successfully updated." }
+        format.html { redirect_to person_url(@person), notice: "Person was successfully updated." }
         format.json { render :show, status: :ok, location: @person }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +55,7 @@ class PeopleController < ApplicationController
     @person.destroy!
 
     respond_to do |format|
-      format.html { redirect_to people_url, notice: "person was successfully destroyed." }
+      format.html { redirect_to people_url, notice: "Person was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -70,6 +70,6 @@ class PeopleController < ApplicationController
     end
 
     def person_params
-      params.require(:person).permit(:name, :person_prompt, :system_prompt)
+      params.require(:person).permit(:name, :person_prompt, :system_prompt, :avatar)
     end
 end

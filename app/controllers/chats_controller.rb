@@ -12,42 +12,32 @@ class ChatsController < ApplicationController
 
   end
 
-  # GET /people/:person_id/chats/new
-  def new
-    @chat = @chats.new
-  end
-
-  # GET /people/:person_id/chats/:id /edit
-  def edit
-
-  end
-
   # POST /people/:person_id/chats
   def create
-    @chat = @chats.new(chat_params)
-
-    respond_to do |format|
-      if @chat.save
-        format.html { redirect_to chat_url(@chat), notice: "Chat was successfully created." }
-        format.json { render :show, status: :created, location: @chat }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @chat.errors, status: :unprocessable_entity }
-      end
-    end
+    @chat = @chats.new(prompt: @person.prompt)
   end
 
   # PUT /people/:person_id/chats/:id 
   def update
-    respond_to do |format|
-      if @chat.update(chat_params)
-        format.html { redirect_to chat_url(@chat), notice: "Chat was successfully updated." }
-        format.json { render :show, status: :ok, location: @chat }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @chat.errors, status: :unprocessable_entity }
-      end
+    response.headers['Content-Type'] = 'text/event-stream'
+    sse = SSE.new(response.stream, retry: 300, event: 'data')
+
+    params[:message] = OpenAIClient::transcribe(params[:message_audio], params[:audio_context]) if params[:message_audio].present?
+    message = @chat.add_message(params[:message])
+    message.audio_files.attach(params[:message_audio]) if params[:message_audio].present?
+
+    message = @chat.add_message(text, 'assistant')
+    count = 0
+    text = OpenAIClient::chat_tts(message, @person.parameters) do |speech|
+      io = StringIO.new(speech)
+      message.audio_files.attach(io: io,
+        filename: "#{message.id}.#{count}.wav",
+        content_type: 'audio/wav')
+      count += 1
+      sse.write({ url: speech.url })
     end
+  ensure
+    sse.close
   end
 
   # DELETE /people/:person_id/chats/:id 
@@ -63,13 +53,10 @@ class ChatsController < ApplicationController
   private
     def set_chats
       @chats = Chat.where(person_id: params[:person_id])
+      @person = Person.find(params[:person_id])
     end
 
     def set_chat
       @chat = Chat.find(params[:id])
-    end
-
-    def chat_params
-      params.require(:chat).permit(:summary, :active)
     end
 end
