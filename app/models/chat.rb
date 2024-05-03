@@ -1,6 +1,5 @@
 class Chat < ApplicationRecord
   belongs_to :person
-  belongs_to :user
 
   has_many :messages, dependent: :destroy
 
@@ -16,8 +15,8 @@ class Chat < ApplicationRecord
     messages.create! content: content, role: role
   end
 
-  def mapped_messages
-    chat.messages.order(:created_at).map do |message|
+  def messages_to_map
+    messages.order(:created_at).map do |message|
       { role: message.role, content: message.content }
     end
   end

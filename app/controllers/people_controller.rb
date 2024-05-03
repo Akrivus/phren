@@ -26,38 +26,26 @@ class PeopleController < ApplicationController
   def create
     @person = @people.new(person_params)
 
-    respond_to do |format|
-      if @person.save
-        format.html { redirect_to person_url(@person), notice: "Person was successfully created." }
-        format.json { render :show, status: :created, location: @person }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
-      end
+    if @person.save
+      redirect_to person_url(@person), notice: "Person was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /people/:id
   def update
-    respond_to do |format|
-      if @person.update(person_params)
-        format.html { redirect_to person_url(@person), notice: "Person was successfully updated." }
-        format.json { render :show, status: :ok, location: @person }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
-      end
+    if @person.update(person_params)
+      redirect_to person_url(@person), notice: "Person was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /people/:id
   def destroy
     @person.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to people_url, notice: "Person was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to people_url, notice: "Person was successfully destroyed."
   end
 
   private
@@ -66,10 +54,10 @@ class PeopleController < ApplicationController
     end
 
     def set_person
-      @person = person.find(params[:id])
+      @person = Person.find(params[:id])
     end
 
     def person_params
-      params.require(:person).permit(:name, :person_prompt, :system_prompt, :avatar)
+      params.require(:person).permit(:id, :name, :person_prompt, :system_prompt, :avatar)
     end
 end

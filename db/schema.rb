@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_02_320009) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
   create_schema "_heroku"
 
   # These are extensions that must be enabled in order to support this database
@@ -49,11 +49,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_02_320009) do
   create_table "chats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "prompt"
     t.uuid "person_id", null: false
-    t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_chats_on_person_id"
-    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -67,7 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_02_320009) do
 
   create_table "memories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content"
-    t.boolean "organic"
+    t.boolean "organic", default: false
     t.uuid "parent_id"
     t.uuid "person_id", null: false
     t.datetime "created_at", null: false
@@ -78,28 +76,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_02_320009) do
 
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content"
-    t.string "role"
+    t.string "role", default: "user"
     t.uuid "chat_id", null: false
-    t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
-    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "person_prompt"
-    t.string "system_prompt"
-    t.string "model"
-    t.string "voice"
+    t.string "person_prompt", default: ""
+    t.string "system_prompt", default: ""
+    t.string "model", default: "gpt-3.5-turbo"
+    t.string "voice", default: "alloy"
     t.integer "max_tokens"
     t.float "temperature"
     t.float "n"
     t.float "top_p"
     t.float "frequency_penalty"
     t.float "presence_penalty"
-    t.boolean "organically_generates_memories"
+    t.boolean "organically_generates_memories", default: false
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -112,15 +108,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_02_320009) do
     t.boolean "admin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "api_key"
+    t.index ["api_key"], name: "index_users_on_api_key", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "people"
-  add_foreign_key "chats", "users"
   add_foreign_key "documents", "people"
   add_foreign_key "memories", "people"
   add_foreign_key "messages", "chats"
-  add_foreign_key "messages", "users"
   add_foreign_key "people", "users"
 end

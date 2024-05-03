@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
-  resources :people do
-    resources :documents
-    resources :memories
-    resources :chats do
-      resources :messages
+  namespace :api do
+    namespace :v1 do
+      post "auth" => "api_key#auth"
+      resources :people, only: %i[index show] do
+        resources :chats, only: %i[create show update destroy]
+       #resources :documents
+       #resources :memories
+      end
     end
+  end
+
+  resources :people do
+    resources :chats
+   #resources :documents
+   #resources :memories
   end
   resources :users
 

@@ -6,8 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :require_login
 
   def current_user
-    id = request.headers["X-User-Id"] || session[:user_id]
-    @current_user ||= User.find(id) if id
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
   def set_current_user(user)

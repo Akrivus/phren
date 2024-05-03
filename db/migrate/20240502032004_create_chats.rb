@@ -4,7 +4,6 @@ class CreateChats < ActiveRecord::Migration[7.1]
       t.string :prompt
 
       t.references :person, null: false, foreign_key: true, type: :uuid
-      t.references :user, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end

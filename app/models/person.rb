@@ -2,7 +2,6 @@ class Person < ApplicationRecord
   belongs_to :user
 
   has_many :chats
-  has_many :messages, through: :chats
 
   has_one_attached :avatar
 
@@ -10,8 +9,8 @@ class Person < ApplicationRecord
     [person_prompt, system_prompt, context].join("\n\n").strip
   end
 
-  def openai_parameters
-    parameters = { model: model, messages: messages, stream: block }
+  def to_parameters messages
+    parameters = { model: model, messages: messages }
     parameters[:max_tokens] = max_tokens if max_tokens.present?
     parameters[:temperature] = temperature if temperature.present?
     parameters[:n] = n if n.present?
