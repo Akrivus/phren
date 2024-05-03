@@ -93,6 +93,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_02_320009) do
     t.string "system_prompt"
     t.string "model"
     t.string "voice"
+    t.integer "max_tokens"
+    t.float "temperature"
+    t.float "n"
+    t.float "top_p"
+    t.float "frequency_penalty"
+    t.float "presence_penalty"
     t.boolean "organically_generates_memories"
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
