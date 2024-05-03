@@ -2,25 +2,25 @@ class MemoriesController < ApplicationController
   before_action :set_memories, only: %i[ index new create ]
   before_action :set_memory, only: %i[ show edit update destroy ]
 
-  # GET /friends/:friend_id/memories
+  # GET /people/:person_id/memories
   def index
     @memories = @memories.all
   end
 
-  # GET /friends/:friend_id/memories/:id
+  # GET /people/:person_id/memories/:id
   def show
   end
 
-  # GET /friends/:friend_id/memories/new
+  # GET /people/:person_id/memories/new
   def new
     @memory = @memories.new
   end
 
-  # GET /friends/:friend_id/memories/:id/edit
+  # GET /people/:person_id/memories/:id/edit
   def edit
   end
 
-  # POST /friends/:friend_id/memories
+  # POST /people/:person_id/memories
   def create
     @memory = @memories.new(memory_params)
 
@@ -35,7 +35,7 @@ class MemoriesController < ApplicationController
     end
   end
 
-  # PUT /friends/:friend_id/memories/:id
+  # PUT /people/:person_id/memories/:id
   def update
     respond_to do |format|
       if @memory.update(memory_params)
@@ -48,7 +48,7 @@ class MemoriesController < ApplicationController
     end
   end
 
-  # DELETE /friends/:friend_id/memories/:id
+  # DELETE /people/:person_id/memories/:id
   def destroy
     @memory.destroy!
 
@@ -60,7 +60,7 @@ class MemoriesController < ApplicationController
 
   private
     def set_memories
-      @memories = Memory.where(friend_id: params[:friend_id])
+      @memories = Memory.where(person_id: params[:person_id])
     end
 
     def set_memory

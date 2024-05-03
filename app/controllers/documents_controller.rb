@@ -2,25 +2,25 @@ class DocumentsController < ApplicationController
   before_action :set_documents, only: %i[ index new create ]
   before_action :set_document, only: %i[ show edit update destroy ]
 
-  # GET /friends/:friend_id/documents
+  # GET /people/:person_id/documents
   def index
     @documents = @documents.all
   end
 
-  # GET /friends/:friend_id/documents/:id 
+  # GET /people/:person_id/documents/:id 
   def show
   end
 
-  # GET /friends/:friend_id/documents/new
+  # GET /people/:person_id/documents/new
   def new
     @document = @documents.new
   end
 
-  # GET /friends/:friend_id/documents/:id /edit
+  # GET /people/:person_id/documents/:id /edit
   def edit
   end
 
-  # POST /friends/:friend_id/documents
+  # POST /people/:person_id/documents
   def create
     @document = @documents.new(document_params)
 
@@ -35,7 +35,7 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # PUT /friends/:friend_id/documents/:id 
+  # PUT /people/:person_id/documents/:id 
   def update
     respond_to do |format|
       if @document.update(document_params)
@@ -48,7 +48,7 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # DELETE /friends/:friend_id/documents/:id 
+  # DELETE /people/:person_id/documents/:id 
   def destroy
     @document.destroy!
 
@@ -60,7 +60,7 @@ class DocumentsController < ApplicationController
 
   private
     def set_documents
-      @documents = Document.where(friend_id: params[:friend_id])
+      @documents = Document.where(person_id: params[:person_id])
     end
 
     def set_document

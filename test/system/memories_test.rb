@@ -17,7 +17,7 @@ class MemoriesTest < ApplicationSystemTestCase
     fill_in "Chat", with: @memory.chat_id
     fill_in "Content", with: @memory.content
     fill_in "Embedding", with: @memory.embedding
-    fill_in "Friend", with: @memory.friend_id
+    fill_in "person", with: @memory.person_id
     click_on "Create Memory"
 
     assert_text "Memory was successfully created"
@@ -31,7 +31,7 @@ class MemoriesTest < ApplicationSystemTestCase
     fill_in "Chat", with: @memory.chat_id
     fill_in "Content", with: @memory.content
     fill_in "Embedding", with: @memory.embedding
-    fill_in "Friend", with: @memory.friend_id
+    fill_in "person", with: @memory.person_id
     click_on "Update Memory"
 
     assert_text "Memory was successfully updated"

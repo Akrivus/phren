@@ -2,27 +2,27 @@ class ChatsController < ApplicationController
   before_action :set_chats, only: %i[ index new create ]
   before_action :set_chat, only: %i[ show edit update destroy ]
 
-  # GET /friends/:friend_id/chats
+  # GET /people/:person_id/chats
   def index
     @chats = @chats.all
   end
 
-  # GET /friends/:friend_id/chats/:id 
+  # GET /people/:person_id/chats/:id 
   def show
 
   end
 
-  # GET /friends/:friend_id/chats/new
+  # GET /people/:person_id/chats/new
   def new
     @chat = @chats.new
   end
 
-  # GET /friends/:friend_id/chats/:id /edit
+  # GET /people/:person_id/chats/:id /edit
   def edit
 
   end
 
-  # POST /friends/:friend_id/chats
+  # POST /people/:person_id/chats
   def create
     @chat = @chats.new(chat_params)
 
@@ -37,7 +37,7 @@ class ChatsController < ApplicationController
     end
   end
 
-  # PUT /friends/:friend_id/chats/:id 
+  # PUT /people/:person_id/chats/:id 
   def update
     respond_to do |format|
       if @chat.update(chat_params)
@@ -50,7 +50,7 @@ class ChatsController < ApplicationController
     end
   end
 
-  # DELETE /friends/:friend_id/chats/:id 
+  # DELETE /people/:person_id/chats/:id 
   def destroy
     @chat.destroy!
 
@@ -62,7 +62,7 @@ class ChatsController < ApplicationController
 
   private
     def set_chats
-      @chats = Chat.where(friend_id: params[:friend_id])
+      @chats = Chat.where(person_id: params[:person_id])
     end
 
     def set_chat

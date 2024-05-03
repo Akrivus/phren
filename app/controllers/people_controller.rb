@@ -1,4 +1,4 @@
-class peopleController < ApplicationController
+class PeopleController < ApplicationController
   before_action :set_people, only: %i[ index new create ]
   before_action :set_person, only: %i[ show edit update destroy ]
 

@@ -3,11 +3,11 @@
 one:
   content: MyString
   embedding: 1.5
-  friend: one
+  person: one
   chat: one
 
 two:
   content: MyString
   embedding: 1.5
-  friend: two
+  person: two
   chat: two

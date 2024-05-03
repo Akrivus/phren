@@ -17,7 +17,7 @@ class MemoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create memory" do
     assert_difference("Memory.count") do
-      post memories_url, params: { memory: { chat_id: @memory.chat_id, content: @memory.content, embedding: @memory.embedding, friend_id: @memory.friend_id } }
+      post memories_url, params: { memory: { chat_id: @memory.chat_id, content: @memory.content, embedding: @memory.embedding, person_id: @memory.person_id } }
     end
 
     assert_redirected_to memory_url(Memory.last)
@@ -34,7 +34,7 @@ class MemoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update memory" do
-    patch memory_url(@memory), params: { memory: { chat_id: @memory.chat_id, content: @memory.content, embedding: @memory.embedding, friend_id: @memory.friend_id } }
+    patch memory_url(@memory), params: { memory: { chat_id: @memory.chat_id, content: @memory.content, embedding: @memory.embedding, person_id: @memory.person_id } }
     assert_redirected_to memory_url(@memory)
   end
 

@@ -69,7 +69,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if logged_in?
-        format.html { redirect_to friends_url, notice: "Welcome!" }
+        format.html { redirect_to people_url, notice: "Welcome!" }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { redirect_to login_url, notice: "Invalid username or password" }
