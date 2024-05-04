@@ -55,7 +55,7 @@ class Api::V1::ChatsController < ApiController
     end
   
     def message_params
-      params.require(:message).permit(:content)
+      params.require(:message).permit(:content) if params[:message].present?
     end
 
     def streaming?
@@ -76,7 +76,8 @@ class Api::V1::ChatsController < ApiController
     end
 
     def transcribe_message_audio
-      message_params[:content] = transcribe(
+      params[:message] ||= {}
+      params[:message][:content] = transcribe(
         transcribe_message_audio_params[:file],
         transcribe_message_audio_params[:prompt])
     end
