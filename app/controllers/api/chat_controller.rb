@@ -9,7 +9,7 @@ class Api::ChatController < BaseApiController
   end
 
   def create
-    @chat = @prompt.chats.create(voice: @prompt.voice, name: params[:name])
+    @chat = prompt.chats.create(voice: @prompt.voice, name: params[:name])
   end
 
   def speech
@@ -19,7 +19,7 @@ class Api::ChatController < BaseApiController
     @message.content = speech_params[:input]
     @message.audio_files.attach(io: StringIO.new(speech),
       filename: 'speech.wav', content_type: 'audio/wav')
-    render text: speech
+    send_data speech
   end
 
   def transcriptions
@@ -35,11 +35,11 @@ class Api::ChatController < BaseApiController
   private
 
     def set_chat
-      @chat = Chat.find(params[:chat_id])
+      @chat = Chat.find(params[:id])
     end
 
     def set_message
-      @message = @chat.messages.new(message_params)
+      @message = @chat.messages.new
     end
 
     def set_prompt
@@ -47,11 +47,11 @@ class Api::ChatController < BaseApiController
     end
 
     def transcription_params
-      params.permit(:file, :prompt)
+      return { file: params[:file], prompt: params[:prompt] }
     end
 
     def speech_params
-      params.permit(:input)
+      return { input: params[:input] }
     end
 
     def openai_client

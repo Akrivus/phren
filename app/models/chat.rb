@@ -6,7 +6,7 @@ class Chat < ApplicationRecord
   after_create :add_system_message
 
   def add_system_message
-    context = "You are chatting with #{chat.name}." if chat.name.present?
+    context = "You are chatting with #{name}." if name.present?
     content = [prompt.person_prompt, prompt.system_prompt, context].compact.join("\n\n")
     add_message content, 'system'
   end

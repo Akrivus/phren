@@ -3,8 +3,8 @@ Rails.application.routes.draw do
     resources :prompt, path: '/', only: %i[show] do
       post :auth, on: :collection
       resources :chat, only: %i[create show] do
-        post :speech, to: 'api/chat#speech', on: :member
-        post :transcriptions, to: 'api/chat#transcriptions', on: :member
+        post :speech, on: :member
+        post :transcriptions, on: :member
       end
     end
   end
