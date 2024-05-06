@@ -1,6 +1,6 @@
 require "test_helper"
 
-class MemoryTest < ActiveSupport::TestCase
+class Api::PromptControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

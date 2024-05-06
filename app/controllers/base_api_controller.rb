@@ -18,6 +18,10 @@ class BaseApiController < ActionController::Base
     @current_user = user
   end
 
+  def prompt
+    @prompt ||= Prompt.find(params[:prompt_id])
+  end
+
   def json_error message, status = :unprocessable_entity
     {
       json: { error: message },

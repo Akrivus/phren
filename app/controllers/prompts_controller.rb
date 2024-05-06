@@ -4,7 +4,7 @@ class PromptsController < ApplicationController
 
   # GET /prompts
   def index
-    @prompts = @prompts.all
+    
   end
 
   # GET /prompts/:id
@@ -49,6 +49,7 @@ class PromptsController < ApplicationController
   end
 
   private
+
     def set_prompts
       @prompts = current_user.prompts
     end
@@ -58,6 +59,10 @@ class PromptsController < ApplicationController
     end
 
     def prompt_params
-      params.require(:prompt).permit(:id, :name, :person_prompt, :system_prompt, :avatar)
+      params.require(:prompt).permit(:id, :name, :api_key,
+        :person_prompt, :system_prompt,
+        :model, :voice, :max_tokens, :temperature, :n, :top_p,
+        :frequency_penalty, :presence_penalty,
+        :organically_generates_memories, :avatar)
     end
 end
