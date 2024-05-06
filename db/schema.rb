@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
   end
 
   create_table "chats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
     t.string "voice"
     t.uuid "prompt_id", null: false
     t.datetime "created_at", null: false
