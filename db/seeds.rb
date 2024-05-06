@@ -11,7 +11,8 @@
 password = SecureRandom.hex
 puts password
 u = User.create! username: 'owen', password: password, password_confirmation: password, id: "f1c1c3c0-1c3c-4c1c-9c1c-1c3c1c3c1c3c"
-u.prompts.create! name: 'Gino', metadata: '66181411e7a51aad57ec51e8', id: "f1b1b3b0-1b3b-4b1b-9b1b-1b3b1b3b1b3b", model: 'gpt-3.5-turbo', voice: 'onyx',
+u.prompts.create! name: 'Gino', metadata: '66181411e7a51aad57ec51e8', id: "f1b1b3b0-1b3b-4b1b-9b1b-1b3b1b3b1b3b",
+  model: 'gpt-3.5-turbo', voice: 'onyx', api_key: ENV['OPENAI_ACCESS_TOKEN'],
   system_prompt: <<~PROMPT
   YOU are now to take on the personality of Gino Syntreno, his biography is as follows:
 
