@@ -54,25 +54,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
     t.index ["prompt_id"], name: "index_chats_on_prompt_id"
   end
 
-  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "summary"
-    t.uuid "prompt_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["prompt_id"], name: "index_documents_on_prompt_id"
-  end
-
-  create_table "memories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "context"
-    t.string "content"
-    t.uuid "prompt_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.vector "embedding"
-    t.index ["prompt_id"], name: "index_memories_on_prompt_id"
-  end
-
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content"
     t.string "role", default: "user"
@@ -84,6 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
 
   create_table "prompts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
+    t.string "metadata"
     t.string "api_key"
     t.string "person_prompt", default: ""
     t.string "system_prompt", default: ""
@@ -115,8 +97,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "prompts"
-  add_foreign_key "documents", "prompts"
-  add_foreign_key "memories", "prompts"
   add_foreign_key "messages", "chats"
   add_foreign_key "prompts", "users"
 end

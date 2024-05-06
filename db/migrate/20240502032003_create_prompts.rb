@@ -2,6 +2,7 @@ class CreatePrompts < ActiveRecord::Migration[7.1]
   def change
     create_table :prompts, id: :uuid do |t|
       t.string :name
+      t.string :metadata
       t.string :api_key
       t.string :person_prompt, default: ''
       t.string :system_prompt, default: ''
