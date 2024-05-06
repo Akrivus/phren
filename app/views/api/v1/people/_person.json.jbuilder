@@ -1,1 +1,0 @@
-json.extract! person, :id, :name, :prompt, :avatar, :created_at, :updated_at

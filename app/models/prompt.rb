@@ -1,13 +1,9 @@
-class Person < ApplicationRecord
+class Prompt < ApplicationRecord
   belongs_to :user
 
   has_many :chats
 
   has_one_attached :avatar
-
-  def prompt context = ""
-    [person_prompt, system_prompt, context].join("\n\n").strip
-  end
 
   def to_parameters messages
     parameters = { model: model, messages: messages }

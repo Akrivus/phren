@@ -1,4 +1,4 @@
-class ApiController < ActionController::Base
+class BaseApiController < ActionController::Base
   helper_method :current_user
   helper_method :set_current_user
 
@@ -14,7 +14,7 @@ class ApiController < ActionController::Base
 
   def set_current_user(user)
     user.update(api_key: SecureRandom.hex)
-    response.headers["x-api-key"] = user.api_key
+    response.headers["x-phren-api-key"] = user.api_key
     @current_user = user
   end
 
@@ -26,8 +26,9 @@ class ApiController < ActionController::Base
   end
 
   private
+
     def api_key
-      request.headers["x-api-key"]
+      request.headers["x-phren-api-key"]
     end
 
     def authenticate!

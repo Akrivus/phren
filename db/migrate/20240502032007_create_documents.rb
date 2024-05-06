@@ -4,7 +4,7 @@ class CreateDocuments < ActiveRecord::Migration[7.1]
       t.string :name
       t.string :summary
 
-      t.references :person, null: false, foreign_key: true, type: :uuid
+      t.references :prompt, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end

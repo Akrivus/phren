@@ -1,24 +1,22 @@
 Rails.application.routes.draw do
   namespace :api do
-    namespace :v1 do
-      post "auth" => "api_key#auth"
-      resources :people, only: %i[index show] do
-        resources :chats, only: %i[create show update destroy]
-       #resources :documents
-       #resources :memories
+    resources :prompt, path: '/', only: %i[show] do
+      post :auth, on: :collection
+      resources :chat, only: %i[create show] do
+        post :speech, to: 'api/chat#speech', on: :member
+        post :transcriptions, to: 'api/chat#transcriptions', on: :member
       end
     end
   end
 
-  resources :people do
+  resources :prompts do
     resources :chats
-   #resources :documents
-   #resources :memories
   end
   resources :users
 
   get '/login', to: 'users#login'
   get '/logout', to: 'users#logout'
   post '/auth', to: 'users#auth'
+  
   get "up" => "rails/health#show", as: :rails_health_check
 end

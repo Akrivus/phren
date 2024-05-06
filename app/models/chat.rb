@@ -1,14 +1,14 @@
 class Chat < ApplicationRecord
-  belongs_to :person
+  belongs_to :prompt
 
   has_many :messages, dependent: :destroy
-
-  validates :prompt, presence: true
 
   after_create :add_system_message
 
   def add_system_message
-    messages.create! content: prompt, role: 'system'
+    context = "You are chatting with #{chat.name}." if chat.name.present?
+    content = [prompt.person_prompt, prompt.system_prompt, context].compact.join("\n\n")
+    add_message content, 'system'
   end
 
   def add_message content, role = 'user'

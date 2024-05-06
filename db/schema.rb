@@ -47,31 +47,30 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
   end
 
   create_table "chats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "prompt"
-    t.uuid "person_id", null: false
+    t.string "voice"
+    t.uuid "prompt_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_chats_on_person_id"
+    t.index ["prompt_id"], name: "index_chats_on_prompt_id"
   end
 
   create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "summary"
-    t.uuid "person_id", null: false
+    t.uuid "prompt_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_documents_on_person_id"
+    t.index ["prompt_id"], name: "index_documents_on_prompt_id"
   end
 
   create_table "memories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "context"
     t.string "content"
-    t.boolean "organic", default: false
-    t.uuid "parent_id"
-    t.uuid "person_id", null: false
+    t.uuid "prompt_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.vector "embedding"
-    t.index ["person_id"], name: "index_memories_on_person_id"
+    t.index ["prompt_id"], name: "index_memories_on_prompt_id"
   end
 
   create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -83,8 +82,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
-  create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "prompts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
+    t.string "api_key"
     t.string "person_prompt", default: ""
     t.string "system_prompt", default: ""
     t.string "model", default: "gpt-3.5-turbo"
@@ -99,7 +99,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_people_on_user_id"
+    t.index ["user_id"], name: "index_prompts_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -114,9 +114,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_03_183559) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "chats", "people"
-  add_foreign_key "documents", "people"
-  add_foreign_key "memories", "people"
+  add_foreign_key "chats", "prompts"
+  add_foreign_key "documents", "prompts"
+  add_foreign_key "memories", "prompts"
   add_foreign_key "messages", "chats"
-  add_foreign_key "people", "users"
+  add_foreign_key "prompts", "users"
 end

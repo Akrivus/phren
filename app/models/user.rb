@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  has_many :people
+  has_many :prompts
   has_many :chats
   has_many :messages
 
