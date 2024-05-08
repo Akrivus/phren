@@ -8,8 +8,8 @@ class Api::PromptController < BaseApiController
   end
 
   def auth
-    user = User.find(params[:user_id])
-    if user && user.authenticate(params[:password])
+    user = User.find(params.require(:user_id))
+    if user && user.authenticate(params.require(:password))
       set_current_user(user)
       render json: { api_key: user.api_key }
     elsif user.nil?
