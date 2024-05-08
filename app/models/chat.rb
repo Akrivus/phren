@@ -3,21 +3,14 @@ class Chat < ApplicationRecord
 
   has_many :messages, dependent: :destroy
 
-  after_create :add_system_message
+  attr_accessor :context
 
-  def add_system_message
-    context = "You are chatting with #{name}." if name.present?
-    content = [prompt.person_prompt, prompt.system_prompt, context].compact.join("\n\n")
-    add_message content, 'system'
-  end
+  after_create :set_system_messages
 
-  def add_message content, role = 'user'
-    messages.create! content: content, role: role
-  end
-
-  def messages_to_map
-    messages.order(:created_at).map do |message|
-      { role: message.role, content: message.content }
+  def set_system_messages
+    prompt.messages.each do |message|
+      content = ERB.new(message.content).result_with_hash(context || {})
+      messages.create! content: content, role: message.role, cloned: true
     end
   end
 end

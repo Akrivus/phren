@@ -1,6 +1,7 @@
 class Api::ChatController < BaseApiController
   before_action :set_chat, only: %i[show transcriptions speech]
-  before_action :set_message, only: %i[transcriptions speech]
+  before_action :set_message, only: %i[transcriptions]
+  before_action :set_latest_message, only: %i[speech]
 
   skip_before_action :authenticate!
 
@@ -9,27 +10,26 @@ class Api::ChatController < BaseApiController
   end
 
   def create
-    @chat = prompt.chats.create(voice: @prompt.voice, name: params[:name])
+    @chat = prompt.chats.create params[:context]
   end
 
   def speech
-    speech = openai_client.audio.speech(parameters:
-      { model: 'tts-1', voice: @chat.voice,
-        input: speech_params[:input] })
-    @message.content = speech_params[:input]
-    @message.audio_files.attach(io: StringIO.new(speech),
-      filename: 'speech.wav', content_type: 'audio/wav')
+    speech = openai_client.audio.speech(parameters: { model: 'tts-1', voice: @chat.voice, input: speech_params[:input] })
+    @message.update(content: @message.content + speech_params[:input])
+    @message.audio_files.attach(io: StringIO.new(speech), filename: 'speech.wav', content_type: 'audio/wav')
     send_data speech
+  rescue Faraday::ClientError => e
+    render json: e.response.body, status: e.response.status
   end
 
   def transcriptions
-    transcription = openai_client.audio.transcribe(parameters:
-      { model: 'whisper-1',
-        prompt: transcription_params[:prompt],
-        file: transcription_params[:file] })
-    @message.content = transcription.dig('text')
+    transcription = openai_client.audio.transcribe(parameters: { model: 'whisper-1', prompt: transcription_params[:prompt], file: transcription_params[:file] })
+    
+    @message.update(content: transcription.dig('text'))
     @message.audio_files.attach(transcription_params[:file])
     render json: transcription
+  rescue Faraday::ClientError => e
+    render json: e.response.body, status: e.response.status
   end
 
   private
@@ -38,8 +38,14 @@ class Api::ChatController < BaseApiController
       @chat = Chat.find(params[:id])
     end
 
-    def set_message
-      @message = @chat.messages.new
+    def set_message role = 'user'
+      @message = @chat.messages.create(role: role, content: '')
+    end
+
+    def set_latest_message
+      @message = @chat.messages.last
+      return if @message.role == 'assistant'
+      set_message 'assistant'
     end
 
     def set_prompt
@@ -47,11 +53,13 @@ class Api::ChatController < BaseApiController
     end
 
     def transcription_params
-      return { file: params[:file], prompt: params[:prompt] }
+      params.require(:file)
+      params.permit(:file, :prompt)
     end
 
     def speech_params
-      return { input: params[:input] }
+      params.require(:input)
+      params.permit(:input)
     end
 
     def openai_client

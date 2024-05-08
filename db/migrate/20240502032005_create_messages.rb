@@ -4,7 +4,10 @@ class CreateMessages < ActiveRecord::Migration[7.1]
       t.string :content
       t.string :role, default: 'user'
 
-      t.references :chat, null: false, foreign_key: true, type: :uuid
+      t.boolean :cloned, default: false
+
+      t.references :chat, foreign_key: true, type: :uuid
+      t.references :prompt, foreign_key: true, type: :uuid
 
       t.timestamps
     end
