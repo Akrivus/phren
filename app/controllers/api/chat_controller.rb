@@ -10,7 +10,7 @@ class Api::ChatController < BaseApiController
   end
 
   def create
-    @chat = prompt.chats.create params.permit(:variables)
+    @chat = prompt.chats.create params.permit(:context)
   end
 
   def speech
