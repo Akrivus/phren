@@ -81,3 +81,8 @@ gem "ruby-openai", "~> 7.0"
 
 # Need neighbor for semantic search and RAG.
 #gem "neighbor", "~> 0.3.2"
+
+gem "scout_apm", "~> 5.3"
+
+gem "sentry-ruby", "~> 5.17"
+gem "sentry-rails", "~> 5.17"
