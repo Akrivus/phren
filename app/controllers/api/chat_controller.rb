@@ -14,9 +14,9 @@ class Api::ChatController < BaseApiController
   end
 
   def speech
-    speech = openai_client.audio.speech(parameters: { model: 'tts-1', voice: @chat.voice, input: speech_params[:input] })
+    speech = openai_client.audio.speech(parameters: { model: 'tts-1', voice: @chat.prompt.voice, input: speech_params[:input], response_format: speech_params[:response_format] })
     @message.update(content: @message.content + speech_params[:input])
-    @message.audio_files.attach(io: StringIO.new(speech), filename: 'speech.wav', content_type: 'audio/wav')
+    @message.audio_files.attach(io: StringIO.new(speech), filename: "speech.#{speech_params[:response_format]}", content_type: "audio/#{speech_params[:response_format]}")
     send_data speech
   rescue Faraday::ClientError => e
     render json: e.response.body, status: e.response.status
@@ -59,7 +59,7 @@ class Api::ChatController < BaseApiController
 
     def speech_params
       params.require(:input)
-      params.permit(:input)
+      params.permit(:input, :response_format)
     end
 
     def openai_client
