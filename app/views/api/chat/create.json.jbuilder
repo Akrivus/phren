@@ -1,6 +1,7 @@
 json.api_url api_prompt_chat_url(@prompt, @chat)
 
 json.metadata @prompt.metadata
+json.topic @prompt.description
 
 json.model @prompt.model
 json.max_tokens @prompt.max_tokens
