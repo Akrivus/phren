@@ -15,6 +15,7 @@ class Api::ChatController < BaseApiController
 
   def speech
     speech = openai_client.audio.speech(parameters: { model: 'tts-1', voice: @chat.prompt.voice, input: speech_params[:input], response_format: speech_params[:response_format] })
+    
     @message.update(content: @message.content + speech_params[:input])
     @message.audio_files.attach(io: StringIO.new(speech), filename: "speech.#{speech_params[:response_format]}", content_type: "audio/#{speech_params[:response_format]}")
     send_data speech
@@ -48,16 +49,13 @@ class Api::ChatController < BaseApiController
       set_message 'assistant'
     end
 
-    def set_prompt
-      @prompt = current_user.prompts.find(params[:prompt_id])
-    end
-
     def transcription_params
       params.require(:file)
       params.permit(:file, :prompt)
     end
 
     def speech_params
+      params[:response_format] ||= 'wav'
       params.require(:input)
       params.permit(:input, :response_format)
     end

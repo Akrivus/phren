@@ -1,4 +1,4 @@
-json.api_uri api_prompt_chat_url(@prompt, @chat)
+json.api_uri api_prompt_chat_url(@chat.prompt, @chat)
 
 json.messages do
   json.array! @chat.messages do |message|
