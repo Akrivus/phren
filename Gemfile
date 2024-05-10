@@ -29,8 +29,8 @@ gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"
 
-# Sidekiq for background jobs [https://github.com/sidekiq/sidekiq]
-gem "sidekiq", "~> 7.2"
+# Delayed Job for background processing [https://github.com/collectiveidea/delayed_job]
+gem 'delayed_job_active_record'
 
 gem "aws-sdk-s3", "~> 1.149"
 

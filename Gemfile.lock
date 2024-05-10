@@ -117,6 +117,11 @@ GEM
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    delayed_job (4.1.11)
+      activesupport (>= 3.0, < 8.0)
+    delayed_job_active_record (4.1.8)
+      activerecord (>= 3.0, < 8.0)
+      delayed_job (>= 3.0, < 5)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -260,11 +265,6 @@ GEM
     sentry-ruby (5.17.3)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sidekiq (7.2.4)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.19.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -308,6 +308,7 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  delayed_job_active_record
   dotenv-rails (~> 2.1, >= 2.1.1)
   image_processing (~> 1.2)
   importmap-rails
@@ -322,7 +323,6 @@ DEPENDENCIES
   selenium-webdriver
   sentry-rails (~> 5.17)
   sentry-ruby (~> 5.17)
-  sidekiq (~> 7.2)
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails
