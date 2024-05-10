@@ -27,7 +27,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-gem "redis", ">= 4.0.1"
+#gem "redis", ">= 4.0.1"
 
 # Delayed Job for background processing [https://github.com/collectiveidea/delayed_job]
 gem 'delayed_job_active_record'
