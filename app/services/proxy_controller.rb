@@ -43,7 +43,8 @@ class ProxyController < Sinatra::Base
 
   private
     def check_access_token
-      JWT.decode request.env['HTTP_AUTHORIZATION'], ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256'
+      token = JWT.decode(request.env['HTTP_AUTHORIZATION'][7..-1], ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256')
+      token[1]
     rescue JWT::DecodeError => e
       halt 403, to_json({ "error" => e.message })
     end
