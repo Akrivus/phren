@@ -1,6 +1,6 @@
 require 'sinatra/base'
 
-class OpenAI::Engine < Sinatra::Base
+class ProxyController < Sinatra::Base
   post '/audio/speech' do
     content_type get_mime_type_for(speech_params[:response_format])
     openai_client.audio.speech(parameters: speech_params)
