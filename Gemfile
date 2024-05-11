@@ -29,11 +29,6 @@ gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 #gem "redis", ">= 4.0.1"
 
-# Delayed Job for background processing [https://github.com/collectiveidea/delayed_job]
-gem 'delayed_job_active_record'
-
-gem "aws-sdk-s3", "~> 1.149"
-
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
@@ -73,16 +68,21 @@ group :test do
   gem "selenium-webdriver"
 end
 
-# Need rack-cors for cross-origin API requests.
+# Tech-y web stuff.
 gem "rack-cors", "~> 2.0"
+gem "jwt"
 
-# Need openai for TTS and ASR API requests.
+# Delayed job and storage.
+gem "delayed_job_active_record"
+gem "aws-sdk-s3", "~> 1.149"
+
+# AI stuff.
 gem "ruby-openai", "~> 7.0"
-
-# Need neighbor for semantic search and RAG.
 #gem "neighbor", "~> 0.3.2"
+gem "oj"
+gem "sinatra"
 
-gem "scout_apm", "~> 5.3"
-
+# Performance tracking gems.
 gem "sentry-ruby", "~> 5.17"
 gem "sentry-rails", "~> 5.17"
+gem "scout_apm", "~> 5.3"
