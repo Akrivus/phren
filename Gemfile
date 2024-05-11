@@ -81,6 +81,7 @@ gem "ruby-openai", "~> 7.0"
 #gem "neighbor", "~> 0.3.2"
 gem "oj"
 gem "sinatra"
+gem "sinatra-cors"
 
 # Performance tracking gems.
 gem "sentry-ruby", "~> 5.17"
