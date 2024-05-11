@@ -18,7 +18,7 @@ class ApiController < ActionController::Base
   end
 
   def create
-    @chat = @prompt.chats.create(params.permit(:context))
+    @chat = @prompt.chats.create(chat_params)
     @token = JWT.encode({
       exp: 1.hour.from_now.to_i,
       cid: @chat.id,
@@ -28,13 +28,17 @@ class ApiController < ActionController::Base
 
   def message
     @message.update(content: @message.content + message_params[:content])
-    @message.audio_files.attach(message_params[:audio_files])
+    @message.audio_files.attach(message_params[:audio_file])
   end
 
   private
 
+    def chat_params
+      params.permit(:chat_id, :context)
+    end
+
     def message_params
-      params.permit(:content, :role, :audio_files)
+      params.permit(:content, :role, :audio_file)
     end
 
     def set_message

@@ -8,4 +8,20 @@ class Message < ApplicationRecord
     orphaned = message.chat.nil? && message.prompt.nil?
     message.errors.add(:base, 'Message orphaned') if orphaned
   end
+
+  def assistant?
+    role == 'assistant'
+  end
+
+  def user?
+    role == 'user'
+  end
+
+  def system?
+    role == 'system'
+  end
+
+  def audio_file
+    audio_files.first
+  end
 end
