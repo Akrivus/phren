@@ -1,9 +1,9 @@
 # This file is used by Rack-based servers to start the application.
 
 require_relative "config/environment"
-require_relative "app/services/openai_engine"
+require_relative "app/services/proxy_controller"
 
-use OpenAI::Engine
+use ProxyController
 
 run Rails.application
 
