@@ -12,12 +12,17 @@ class Chat < ApplicationRecord
     chat.messages.create(message: message, content: message.content, role: 'user', cloned: true) if chat && message.assistant?
   end
 
+  def destroy_if_empty
+    destroy unless messages.exists? cloned: false
+  end
+
   private
 
     def set_system_messages
-      prompt.messages.each do |message|
-        content = ERB.new(message.content).result_with_hash(context || {})
-        messages.create! content: content, role: message.role, cloned: true
+      prompt.messages.each do |m|
+        content = ERB.new(m.content).result_with_hash(context || {})
+        message = messages.create! content: content, role: m.role, cloned: true
+        message.delay(run_at: 1.hour.from_now).destroy_if_empty
       end
     end
 end
