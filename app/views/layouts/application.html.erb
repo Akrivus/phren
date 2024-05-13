@@ -32,6 +32,9 @@
       </div>
     </nav>
     <div class="container-fluid p-3">
+      <% if notice %>
+        <div class="alert alert-<%= role rescue 'primary' %>" role="alert"><%= notice %></div>
+      <% end %>
       <%= yield %>
     </div>
   </body>

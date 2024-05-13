@@ -3,4 +3,6 @@ class Prompt < ApplicationRecord
 
   has_many :chats
   has_many :messages
+
+  accepts_nested_attributes_for :messages, allow_destroy: true
 end
