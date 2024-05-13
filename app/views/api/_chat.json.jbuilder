@@ -12,7 +12,7 @@ json.voice @chat.prompt.voice
 json.interstitial_prompt @chat.prompt.interstitial_prompt
 
 json.messages do
-  json.array! @chat.messages do |message|
+  json.array! @chat.messages.order(created_at: :asc) do |message|
     json.content message.content
     json.role message.role
 

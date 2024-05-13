@@ -59,7 +59,7 @@
               </tr>
             </thead>
             <tbody>
-              <% prompt.messages.each do |message| %>
+              <% prompt.messages.order(created_at: :asc).each do |message| %>
                 <tr>
                   <td><%= message.role %></td>
                   <td><%= message.content %></td>
