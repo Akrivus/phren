@@ -27,7 +27,7 @@
         <% unless logged_in? %>
           <%= link_to 'Log In', login_url, class: 'btn btn-success' %>
         <% else %>
-          <%= link_to 'Log Out', logout_url, class: 'btn btn-danger' %>
+          <%= link_to 'Log Out', logout_url, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
         <% end %>
       </div>
     </nav>
