@@ -60,7 +60,7 @@ class PromptsController < ApplicationController
 
     def prompt_params
       params.require(:prompt).permit(:id, :name, :description,
-        :metadata, :voice, :model, :max_tokens, :temperature,
+        :metadata, :voice, :model, :max_tokens, :temperature, :interstitial_prompt,
         messages_attributes: [ :id, :content, :role, :_destroy ])
     end
 end
