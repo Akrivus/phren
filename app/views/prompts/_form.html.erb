@@ -58,6 +58,7 @@
         <tr>
           <th scope="col" style="width:15%; min-width:7rem;">Role</th>
           <th scope="col">Content</th>
+          <th scope="col" style="width:3rem;"></th>
         </tr>
       </thead>
       <tbody>
@@ -66,6 +67,11 @@
             <tr>
               <td><%= fields.select :role, %w[system user assistant], {}, class: 'form-control' %></td>
               <td><%= fields.text_area :content, class: 'form-control' %></td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                  <%= fields.check_box :_destroy, class: 'custom-control-input' %>
+                </div>
+              </td>
             </tr>
           <% end %>
         <% end %>
