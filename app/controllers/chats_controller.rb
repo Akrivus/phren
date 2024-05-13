@@ -14,7 +14,7 @@ class ChatsController < ApplicationController
 
   # GET /prompts/:prompt_id/chats/new
   def new
-    
+    render :new, layout: false
   end
 
   # DELETE /prompts/:prompt_id/chats/:id 

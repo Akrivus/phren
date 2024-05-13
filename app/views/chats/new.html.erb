@@ -1,5 +1,5 @@
 <div id="unity-container">
-  <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+  <canvas id="unity-canvas" tabindex="-1" style="width:100%; height:100%;"></canvas>
   <div id="unity-loading-bar">
     <div id="unity-logo"></div>
     <div id="unity-progress-bar-empty">
@@ -39,13 +39,13 @@
     updateBannerVisibility();
   }
 
-  var buildUrl = "Build";
+  var buildUrl = "/unity/Build";
   var loaderUrl = buildUrl + "/unity.loader.js";
   var config = {
     dataUrl: buildUrl + "/unity.data",
     frameworkUrl: buildUrl + "/unity.framework.js",
     codeUrl: buildUrl + "/unity.wasm",
-    streamingAssetsUrl: "StreamingAssets",
+    streamingAssetsUrl: "/unity/StreamingAssets",
     companyName: "Syntreno",
     productName: "Demo",
     productVersion: "<%= @prompt.id %>",
