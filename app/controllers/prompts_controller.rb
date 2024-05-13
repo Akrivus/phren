@@ -14,7 +14,7 @@ class PromptsController < ApplicationController
 
   # GET /prompts/new
   def new
-    @prompt = @prompts.new
+    @prompt = @prompts.new(messages: [ Message.new(role: 'system') ])
   end
 
   # GET /prompts/:id/edit
@@ -59,10 +59,8 @@ class PromptsController < ApplicationController
     end
 
     def prompt_params
-      params.require(:prompt).permit(:id, :name, :api_key,
-        :person_prompt, :system_prompt,
-        :model, :voice, :max_tokens, :temperature, :n, :top_p,
-        :frequency_penalty, :presence_penalty,
-        :organically_generates_memories, :avatar)
+      params.require(:prompt).permit(:id, :name, :description,
+        :metadata, :voice, :model, :max_tokens, :temperature,
+        messages_attributes: [ :id, :content, :role, :_destroy ])
     end
 end

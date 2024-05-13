@@ -1,8 +1,11 @@
 class Message < ApplicationRecord
+  belongs_to :message, optional: true
   belongs_to :chat, optional: true
   belongs_to :prompt, optional: true
 
   has_many_attached :audio_files
+
+  after_update :mirror_message, if: :content_changed?
 
   validate do |message|
     orphaned = message.chat.nil? && message.prompt.nil?
@@ -21,7 +24,13 @@ class Message < ApplicationRecord
     role == 'system'
   end
 
-  def audio_file
-    audio_files.first
+  def audio_files
+    message ? message.audio_files : super
   end
+
+  private
+
+    def mirror_message
+      message.update(content: content) if message
+    end
 end

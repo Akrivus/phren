@@ -9,6 +9,8 @@ json.max_tokens @chat.prompt.max_tokens
 json.temperature @chat.prompt.temperature
 json.voice @chat.prompt.voice
 
+json.interstitial_prompt @chat.prompt.interstitial_prompt
+
 json.messages do
   json.array! @chat.messages do |message|
     json.content message.content

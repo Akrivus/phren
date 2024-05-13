@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_10_173009) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_13_045912) do
   create_schema "_heroku"
 
   # These are extensions that must be enabled in order to support this database
@@ -50,6 +50,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_173009) do
     t.uuid "prompt_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "chat_id"
+    t.index ["chat_id"], name: "index_chats_on_chat_id"
     t.index ["prompt_id"], name: "index_chats_on_prompt_id"
   end
 
@@ -76,7 +78,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_173009) do
     t.uuid "prompt_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "message_id"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["message_id"], name: "index_messages_on_message_id"
     t.index ["prompt_id"], name: "index_messages_on_prompt_id"
   end
 
@@ -92,6 +96,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_173009) do
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "interstitial_prompt", default: "{0}"
     t.index ["user_id"], name: "index_prompts_on_user_id"
   end
 
@@ -106,8 +111,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_173009) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chats", "chats"
   add_foreign_key "chats", "prompts"
   add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "messages"
   add_foreign_key "messages", "prompts"
   add_foreign_key "prompts", "users"
 end

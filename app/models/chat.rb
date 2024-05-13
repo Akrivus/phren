@@ -9,7 +9,7 @@ class Chat < ApplicationRecord
   after_create :set_system_messages
 
   def mirror_message message
-    chat.messages.create(content: message.content, role: 'user', cloned: true) if chat && message.assistant?
+    chat.messages.create(message: message, content: message.content, role: 'user', cloned: true) if chat && message.assistant?
   end
 
   private
