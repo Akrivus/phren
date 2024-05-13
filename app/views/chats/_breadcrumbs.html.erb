@@ -1,0 +1,17 @@
+<h6>
+  <%= link_to 'Prompts', prompts_path %>
+  <%= raw('&rsaquo;') %>
+  <%= link_to @prompt.name, @prompt %>
+  <%= raw('&rsaquo;') %>
+  <%= link_to 'Chats', prompt_chats_path(@prompt) %>
+  <%= raw('&rsaquo;') %>
+  <% if @chat.present? && @chat.persisted? %>
+    <%= link_to @chat.id, prompt_chat_path(@prompt, @chat) %>
+    <%= raw('&rsaquo;') %>
+    <%= link_to 'Edit', edit_prompt_chat_path(@prompt, @chat) %>
+    |
+    <%= link_to 'Destroy', prompt_chat_path(@prompt, @chat), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger' %>
+  <% else %>
+    <%= link_to 'New Chat', new_prompt_chat_path(@prompt) %>
+  <% end %>
+</h6>

@@ -1,14 +1,20 @@
-<p style="color: green"><%= notice %></p>
+<%= render 'chats/breadcrumbs' %>
 
 <h1>Chats</h1>
 
-<div id="chats">
-  <% @chats.each do |chat| %>
-    <%= render chat %>
-    <p>
-      <%= link_to "Show this chat", chat %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New chat", new_chat_path %>
+<table class="table" id="chats">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Created at</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @chats.each do |chat| %>
+      <tr id="<%= dom_id chat %>">
+        <td><%= link_to chat.id, prompt_chat_path(@prompt, chat) %></td>
+        <td><%= chat.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

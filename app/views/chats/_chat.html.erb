@@ -1,12 +1,27 @@
 <div id="<%= dom_id chat %>">
-  <p>
-    <strong>Summary:</strong>
-    <%= chat.summary %>
-  </p>
-
-  <p>
-    <strong>Active:</strong>
-    <%= chat.active %>
-  </p>
-
+  <table class="table">
+    <thead>
+      <th class="row">Messages</th>
+    </thead>
+    <tbody>
+      <tr>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" style="width:15%; min-width:7rem;">Role</th>
+              <th scope="col">Content</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% chat.messages.each do |message| %>
+              <tr>
+                <td><%= message.role %></td>
+                <td><%= message.content %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </tr>
+    </tbody>
+  </table>
 </div>

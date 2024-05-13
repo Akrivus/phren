@@ -1,5 +1,6 @@
 class ChatsController < ApplicationController
   before_action :set_chat, only: %i[ show destroy ]
+  before_action :prompt
 
   # GET /prompts/:prompt_id/chats
   def index
@@ -27,5 +28,9 @@ class ChatsController < ApplicationController
 
     def set_chat
       @chat = Chat.find(params[:id])
+    end
+
+    def prompt
+      @prompt ||= Prompt.find(params[:prompt_id])
     end
 end
