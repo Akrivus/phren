@@ -19,10 +19,10 @@ class Chat < ApplicationRecord
   private
 
     def set_system_messages
+      delay(run_at: 1.hour.from_now).destroy_if_empty
       prompt.messages.each do |m|
         content = ERB.new(m.content).result_with_hash(context || {})
         message = messages.create! content: content, role: m.role, cloned: true
-        message.delay(run_at: 1.hour.from_now).destroy_if_empty
       end
     end
 end
