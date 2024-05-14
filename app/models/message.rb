@@ -7,6 +7,8 @@ class Message < ApplicationRecord
 
   after_update :mirror_message, if: :content_changed?
 
+  scope :in_order, -> { order(created_at: :asc) }
+
   validate do |message|
     orphaned = message.chat.nil? && message.prompt.nil?
     message.errors.add(:base, 'Message orphaned') if orphaned

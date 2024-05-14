@@ -4,7 +4,7 @@ class ChatsController < ApplicationController
 
   # GET /prompts/:prompt_id/chats
   def index
-    @chats = prompt.chats
+    @chats = prompt.chats.in_order
   end
 
   # GET /prompts/:prompt_id/chats/:id 

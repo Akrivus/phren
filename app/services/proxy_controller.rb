@@ -11,10 +11,10 @@ class ProxyController < Sinatra::Base
 
   post '/audio/speech' do
     audio_data = openai_client.audio.speech(parameters: speech_params)
-    
-    log_message(speech_params[:input], StringIO.new(audio_data)) if settings.log_messages
-
     content_type get_mime_type_for(speech_params[:response_format])
+    
+    log_message(speech_params[:input], StringIO.new(audio_data), content_type) if settings.log_messages
+
     audio_data
   rescue Faraday::ClientError => e
     halt e.response[:status], to_json(e.response[:body])
@@ -23,7 +23,7 @@ class ProxyController < Sinatra::Base
   post '/audio/transcriptions' do
     transcription = openai_client.audio.transcribe(parameters: transcription_params)
     
-    log_message(transcription[:text], params[:file]) if settings.log_messages
+    log_message(transcription['text'], params[:file]) if settings.log_messages
 
     to_json(transcription)
   rescue Faraday::ClientError => e
@@ -35,7 +35,7 @@ class ProxyController < Sinatra::Base
     stream do |sse|
       params[:stream] = proc { |data| sse << "data: #{Oj.dump(data)}\n\n" }
       openai_client.chat(parameters: chat_params)
-      sse << "data: [[DONE]]\n\n"
+      sse << "data: [DONE]\n\n"
     end if params[:stream]
     unless params[:stream]
       to_json(openai_client.chat(parameters: chat_params))
@@ -59,11 +59,17 @@ class ProxyController < Sinatra::Base
 
   private
 
-    def log_message content, file
+    def log_message content, io, mime = 'audio/wav'
+      io.rewind if io.respond_to? :rewind
       fork do
-        chat = Chat.find(check_access_token['cid'])
-        chat.log_message(content, params[:role], file)
+        payload = { content: content, role: params[:role],
+          file: Faraday::UploadIO.new(io, mime) }
+        cid = check_access_token['cid']
+        @@client.post "/api/#{cid}/message", payload
       end if params[:role].present?
+    rescue => e
+      puts e.class
+      puts e.message
     end
 
     def check_access_token
@@ -121,6 +127,11 @@ class ProxyController < Sinatra::Base
     end
 
     def openai_client
+      @@client ||= Faraday.new(url: ENV['API_URL']) do |faraday|
+        faraday.request :multipart
+        faraday.request :url_encoded
+        faraday.adapter :net_http
+      end
       @@openai_client ||= OpenAI::Client.new(
         uri_base: 'https://api.openai.com/v1',
         access_token: ENV['OPENAI_ACCESS_TOKEN'])

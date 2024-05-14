@@ -13,10 +13,16 @@
             </tr>
           </thead>
           <tbody>
-            <% chat.messages.each do |message| %>
+            <% chat.messages.in_order.each do |message| %>
               <tr>
                 <td><%= message.role %></td>
                 <td><%= message.content %></td>
+                <td>
+                <% message.audio_files.each do |audio_file| %>
+                  <audio src="<%= audio_file.url %>" id="<%= dom_id audio_file %>">Your browser does not support the audio element.</audio>
+                  <a onclick="document.getElementById('<%= dom_id audio_file %>')" href="#">Play</a>
+                <% end %>
+                </td>
               </tr>
             <% end %>
           </tbody>

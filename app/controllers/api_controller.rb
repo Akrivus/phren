@@ -28,7 +28,7 @@ class ApiController < ActionController::Base
 
   def message
     @message.update(content: @message.content + message_params[:content])
-    @message.audio_files.attach(message_params[:audio_file])
+    @message.audio_files.attach(message_params[:file])
   end
 
   private
@@ -38,12 +38,12 @@ class ApiController < ActionController::Base
     end
 
     def message_params
-      params.permit(:content, :role, :audio_file)
+      params.permit(:content, :role, :file)
     end
 
     def set_message
       role = message_params[:role] || 'user'
-      @message = @chat.messages.last
+      @message = @chat.messages.in_order.last
       return if @message.role == role
       @message = @chat.messages.create(role: role, content: '')
     end

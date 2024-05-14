@@ -62,7 +62,7 @@
         </tr>
       </thead>
       <tbody>
-        <% prompt.messages.order(created_at: :asc).each do |message| %>
+        <% prompt.messages.in_order.each do |message| %>
           <%= form.fields_for :messages, message do |fields| %>
             <tr>
               <td><%= fields.select :role, %w[system user assistant], {}, class: 'form-control' %></td>

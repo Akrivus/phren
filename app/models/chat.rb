@@ -8,6 +8,8 @@ class Chat < ApplicationRecord
 
   after_create :set_system_messages
 
+  scope :in_order, -> { order(created_at: :desc) }
+
   def log_message content, role, file
     messages.create! content: content, role: role
     messages.audio_files.attach(file) if file
@@ -27,7 +29,7 @@ class Chat < ApplicationRecord
     end
 
     def set_system_messages
-      prompt.messages.each do |m|
+      prompt.messages.in_order.each do |m|
         content = ERB.new(m.content).result_with_hash(context || {})
         message = messages.create! content: content, role: m.role, cloned: true
       end
