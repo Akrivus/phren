@@ -8,18 +8,25 @@ class Chat < ApplicationRecord
 
   after_create :set_system_messages
 
-  def mirror_message message
-    chat.messages.create(message: message, content: message.content, role: 'user', cloned: true) if chat && message.assistant?
+  def log_message content, role, file
+    messages.create! content: content, role: role
+    messages.audio_files.attach(file) if file
   end
 
   def destroy_if_empty
     destroy unless messages.exists? cloned: false
   end
 
+  handle_asynchronously :log_message
+  handle_asynchronously :destroy_if_empty, run_at: 1.hour.from_now
+
   private
 
+    def mirror_message message
+      chat.messages.create(message: message, content: message.content, role: 'user', cloned: true) if chat && message.assistant?
+    end
+
     def set_system_messages
-      delay(run_at: 1.hour.from_now).destroy_if_empty
       prompt.messages.each do |m|
         content = ERB.new(m.content).result_with_hash(context || {})
         message = messages.create! content: content, role: m.role, cloned: true
