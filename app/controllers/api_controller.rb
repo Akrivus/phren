@@ -27,7 +27,8 @@ class ApiController < ActionController::Base
   end
 
   def message
-    @message.update(content: @message.content + message_params[:content])
+    content = [@message.content, message_params[:content]].join(' ').gsub('  ', ' ')
+    @message.update(content: content)
     @message.audio_files.attach(message_params[:file])
   end
 
