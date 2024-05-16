@@ -11,8 +11,8 @@ class Chat < ApplicationRecord
   scope :in_order, -> { order(created_at: :desc) }
 
   def log_message content, role, file
-    messages.create! content: content, role: role
-    messages.audio_files.attach(file) if file
+    message = messages.create! content: content, role: role
+    message.audio_files.attach(file) if file
   end
 
   def destroy_if_empty
