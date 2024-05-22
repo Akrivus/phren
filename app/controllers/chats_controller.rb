@@ -2,7 +2,7 @@ class ChatsController < ApplicationController
   before_action :set_chat, only: %i[ show destroy ]
   before_action :prompt
 
-  skip_before_action :require_login, only: %i[new]
+  skip_before_action :require_login, only: %i[new show]
 
   # GET /prompts/:prompt_id/chats
   def index
