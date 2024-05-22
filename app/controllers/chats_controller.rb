@@ -2,6 +2,8 @@ class ChatsController < ApplicationController
   before_action :set_chat, only: %i[ show destroy ]
   before_action :prompt
 
+  skip_before_action :require_login, only: %i[new]
+
   # GET /prompts/:prompt_id/chats
   def index
     @chats = prompt.chats.in_order
