@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     post :message, on: :member
   end
 
-  get '/c/:slug', to: 'c#show'
+  get '/c', to: 'c#show'
 
   resources :prompts do
     resources :chats

@@ -12,6 +12,6 @@
     |
     <%= link_to 'Destroy', prompt_chat_path(@prompt, @chat), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger' %>
   <% else %>
-    <%= link_to 'New Chat', new_prompt_chat_path(@prompt) %>
+    <%= link_to 'New Chat', c_path(c: @prompt.id) %>
   <% end %>
 </h6>
