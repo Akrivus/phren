@@ -3,6 +3,6 @@ class CController < ApplicationController
 
   def show
     @prompt = Prompt.find_by(slug: params.require(:c))
-    render 'chats/new', layout: false unless @prompt.nil?
+    render :show, layout: false
   end
 end
