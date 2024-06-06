@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/cors'
 
-class ProxyController < Sinatra::Base
+class SinatraApplication < Sinatra::Base
   register Sinatra::Cors
 
   set :allow_methods, "POST"
