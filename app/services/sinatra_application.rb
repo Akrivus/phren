@@ -81,7 +81,7 @@ class SinatraApplication < Sinatra::Base
     def speech_params
       params[:user] = check_access_token['uid']
       params.slice(:model,
-        :voice, :input,
+        :voice, :input, :speed,
         :response_format, :user)
     end
 
