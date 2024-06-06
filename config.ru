@@ -1,11 +1,11 @@
-# This file is used by Rack-based servers to start the application.
+require "scout_apm"
 
-require_relative "config/environment"
-require_relative "app/services/sinatra_application"
+ScoutApm::Rack.install!
+
+require "rack/attack"
 
 use Rack::Attack
 
-use SinatraApplication
-run Rails.application
+require "./app"
 
-Rails.application.load_server
+run Sinatra::Application
