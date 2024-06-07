@@ -24,3 +24,7 @@ group :production do
   gem "scout_apm", "~> 5.3"
   gem "sentry-ruby", "~> 5.17"
 end
+
+group :development do
+  gem "dotenv"
+end

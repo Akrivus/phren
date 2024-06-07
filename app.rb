@@ -7,3 +7,6 @@ require_relative "sinatra/openai"
 set :allow_methods, "POST"
 set :allow_origin, "*"
 set :allow_headers, "content-type,authorization"
+
+register Sinatra::Authentication
+register Sinatra::OpenAI
