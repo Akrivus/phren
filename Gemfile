@@ -4,12 +4,6 @@ ruby "3.2.2"
 
 gem "activesupport", "~> 7.1"
 
-gem "sequel"
-gem "pg", "~> 1.5"
-gem "pgvector"
-
-gem "aws-sdk-s3", "~> 1.149"
-
 gem "oj"
 
 gem "rack"
@@ -29,3 +23,7 @@ end
 group :development do
   gem "dotenv"
 end
+
+gem "rackup", "~> 2.1"
+
+gem "puma", "~> 6.4"
