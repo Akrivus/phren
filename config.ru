@@ -1,11 +1,15 @@
-# This file is used by Rack-based servers to start the application.
+require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
-require_relative "config/environment"
-require_relative "app/services/sinatra_application"
+require 'active_support/all'
+
+require 'scout_apm'
+
+ScoutApm::Rack.install!
+
+require './lib/rack-attack'
 
 use Rack::Attack
 
-use SinatraApplication
-run Rails.application
+require './app'
 
-Rails.application.load_server
+run Sinatra::Application

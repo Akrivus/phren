@@ -1,1 +1,0 @@
-json.partial! 'api/chat', chat: @chat
