@@ -1,3 +1,3 @@
 # phren
 
-For tracking prompts and logging LLM responses.
+Quick OpenAI proxy with access control, CORS, and underlying rate limits.

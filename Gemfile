@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 ruby "3.2.2"
 
+gem "activesupport", "~> 7.1"
+
 gem "sequel"
 gem "pg", "~> 1.5"
 gem "pgvector"

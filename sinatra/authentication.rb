@@ -6,6 +6,7 @@ module Sinatra
   module Authentication
     module Helpers
       def token
+        return nil unless request.env['HTTP_AUTHORIZATION']
         authorization = request.env['HTTP_AUTHORIZATION'][7..-1]
         token = JWT.decode(authorization, ENV['SECRET_KEY_BASE'], true, algorithm: 'HS256')
         token[0]

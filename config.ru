@@ -1,13 +1,15 @@
-require "dotenv/load" if ENV["RACK_ENV"] == "development"
+require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
-require "scout_apm"
+require 'active_support/all'
+
+require 'scout_apm'
 
 ScoutApm::Rack.install!
 
-require "rack/attack"
+require './lib/rack-attack'
 
 use Rack::Attack
 
-require "./app"
+require './app'
 
 run Sinatra::Application
