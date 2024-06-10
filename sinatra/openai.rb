@@ -5,6 +5,8 @@ require 'oj'
 
 require 'sinatra/base'
 
+require 'securerandom'
+
 module Sinatra
   module OpenAI
     module Helpers

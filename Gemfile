@@ -14,9 +14,9 @@ gem "oj"
 
 gem "rack"
 gem "rack-attack", "~> 6.7"
+gem 'rack-cors'
 
 gem "sinatra"
-gem "sinatra-cors"
 gem "jwt"
 
 gem "ruby-openai", "~> 7.0"
