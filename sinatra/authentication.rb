@@ -33,6 +33,7 @@ module Sinatra
       app.helpers Helpers
 
       app.get '/auth' do
+        halt 403 unless params[:token] == ENV['SECRET_TOKEN']
         content_type :json
         { 
           "token" => JWT.encode({

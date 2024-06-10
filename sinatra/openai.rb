@@ -14,11 +14,12 @@ module Sinatra
 
       def to_json data
         content_type 'application/json'
+        puts data
         ::Oj.dump(data)
       end
 
       def speech_params
-        params[:user] = check_access_token['uid']
+        params[:user] = token['jti']
         params.slice(:model,
           :voice, :input, :speed,
           :response_format, :user)
@@ -101,9 +102,8 @@ module Sinatra
       app.before do
         authorize! unless request.path_info == '/auth'
         pass if request.env['CONTENT_TYPE'] != 'application/json'
-        request.body.rewind
         json = Oj.load(request.body.read)
-        json.each { |k, v| params[k] = v }
+        json.each { |k, v| params[k] = v } if json
       end
     end
   end
