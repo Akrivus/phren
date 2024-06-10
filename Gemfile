@@ -17,7 +17,6 @@ gem "sinatra"
 gem "sinatra-cors"
 gem "jwt"
 
-
 gem "ruby-openai", "~> 7.0"
 
 group :production do
